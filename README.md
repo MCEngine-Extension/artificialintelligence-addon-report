@@ -4,10 +4,11 @@ This `AddOn` is designed to report players to admins using AI-powered summaries.
 
 # ✨ Features
 
-Ask AI to generate a summary report like:
+Ask AI to generate a summary report using:
 
 ```bash
-/report me {player name}
+/report {player name} <msg> # Default
+/report {player name}       # Requires permission: mcengine.artificialintelligence.addon.report.summary
 ```
 
 It will send the player's name, UUID, and report details to the AI and return a summarized response.
@@ -19,5 +20,4 @@ The database marks each report as "used" once it has been sent, so only new/unpr
 
 This AddOn uses a secure server token to communicate with the AI 🔒.
 
-The `/report me` command requires the `mcengine.report.ai` permission.  
-Only OPs or players with this permission can use the command.
+Only players with the appropriate permission can use this command.
