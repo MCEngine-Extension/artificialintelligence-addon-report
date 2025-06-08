@@ -3,13 +3,14 @@ package io.github.mcengine.addon.artificialintelligence.report.command;
 import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
 import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
 import io.github.mcengine.addon.artificialintelligence.report.database.ReportDB;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public class ReportCommand implements CommandExecutor {
 
@@ -30,6 +31,7 @@ public class ReportCommand implements CommandExecutor {
 
         if (args.length < 2) {
             sender.sendMessage("§eUsage: /report <player> <message>");
+            sender.sendMessage("§eUsage: /report <player> <platform> <model>");
             return true;
         }
 
@@ -39,18 +41,37 @@ public class ReportCommand implements CommandExecutor {
             return true;
         }
 
-        String message = String.join(" ", java.util.Arrays.copyOfRange(args, 1, args.length));
+        // AI-generated summary
+        if (args.length == 3 && MCEngineArtificialIntelligenceApi.getApi().getAi(args[1], args[2]) != null) {
+            if (!reporter.hasPermission("mcengine.artificialintelligence.addon.report.summary")) {
+                reporter.sendMessage("§cYou do not have permission to use AI-generated reports.");
+                return true;
+            }
 
-        try {
-            reportDB.insertReport(reporter.getUniqueId().toString(), reportedPlayer.getUniqueId().toString(), message);
-            reporter.sendMessage("§aYour report has been submitted.");
-            logger.info(reporter.getName() + " reported " + reportedPlayer.getName() + ": " + message);
-        } catch (Exception e) {
-            reporter.sendMessage("§cFailed to submit report.");
-            logger.warning("Error while submitting report: " + e.getMessage());
-            e.printStackTrace();
+            String platform = args[1];
+            String model = args[2];
+            String reporterId = reporter.getUniqueId().toString();
+            String reportedId = reportedPlayer.getUniqueId().toString();
+
+            String reason = reportDB.getAllReasons(reporterId, reportedId);
+
+            String prompt = "Generate a report message for player:\n" +
+                    reportedPlayer.getName() + "\n\n" +
+                    "Reason history:\n" + reason;
+
+            MCEngineArtificialIntelligenceApi.getApi().runBotTask(
+                reporter, "server", platform, model, prompt
+            );
+
+            reporter.sendMessage("§aGenerating report message using AI...");
+            return true;
         }
 
+        // Manual report
+        String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+        reportDB.insertReport(reporter.getUniqueId().toString(), reportedPlayer.getUniqueId().toString(), message);
+        reporter.sendMessage("§aYour report has been submitted.");
+        logger.info(reporter.getName() + " reported " + reportedPlayer.getName() + ": " + message);
         return true;
     }
 }
