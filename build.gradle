@@ -1,0 +1,73 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'java'
+}
+
+version = project.properties[project.name + '.version'] ?: 'undefined'
+group = 'io.github.mcengine'
+
+ext {
+    user_git_name = System.getenv('USER_GIT_NAME')
+    user_github_token = System.getenv('USER_GITHUB_TOKEN')
+    jarName = System.getenv('PROJECT_NAME') ?: 'MCEngine-ArtificialIntelligence-AddOn-Report'
+}
+
+def mcengineApiVersion = findProperty('mcengine-api.version') ?: 'undefined'
+def mcengineArtificialIntelligenceApiVersion = findProperty('mcengine-artificialintelligence-api.version') ?: 'undefined'
+def spigotmcApiVersion = findProperty('spigotmc-api.version') ?: 'undefined'
+
+allprojects {
+    group = 'io.github.mcengine'
+
+    apply plugin: 'java'
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+
+        maven {
+            url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
+            content {
+                includeGroup 'org.bukkit'
+                includeGroup 'org.spigotmc'
+            }
+        }
+
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://oss.sonatype.org/content/repositories/central' }
+
+        maven {
+            url = uri('https://maven.pkg.github.com/MCEngine/mcengine-api')
+            credentials {
+                username = project.user_git_name
+                password = project.user_github_token
+            }
+        }
+        maven {
+            url = uri('https://maven.pkg.github.com/MCEngine/artificialintelligence-api')
+            credentials {
+                username = project.user_git_name
+                password = project.user_github_token
+            }
+        }
+    }
+}
+
+dependencies {
+    compileOnly "io.github.mcengine:mcengine-api:$mcengineApiVersion"
+    compileOnly "io.github.mcengine:mcengine-artificialintelligence-api:$mcengineArtificialIntelligenceApiVersion"
+
+    compileOnly "org.spigotmc:spigot-api:$spigotmcApiVersion"
+}
+
+shadowJar {
+    archiveClassifier = null
+    archiveBaseName = project.jarName
+}
+
+tasks.named('jar').configure {
+    enabled = false
+}
+
+build.dependsOn(shadowJar)
