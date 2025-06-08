@@ -1,8 +1,8 @@
 package io.github.mcengine.addon.artificialintelligence.report.command;
 
-import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
 import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
 import io.github.mcengine.addon.artificialintelligence.report.database.ReportDB;
+import io.github.mcengine.addon.artificialintelligence.report.util.ReportCommandUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -41,37 +41,13 @@ public class ReportCommand implements CommandExecutor {
             return true;
         }
 
-        // Attempt to parse as AI-generated summary
+        // Attempt AI-generated summary
         if (args.length == 3) {
             String platform = args[1];
             String model = args[2];
 
-            try {
-                if (MCEngineArtificialIntelligenceApi.getApi().getAi(platform, model) != null) {
-                    if (!player.hasPermission("mcengine.artificialintelligence.addon.report.summary")) {
-                        player.sendMessage("§cYou do not have permission to use AI-generated reports.");
-                        return true;
-                    }
-
-                    String reportedId = reportedPlayer.getUniqueId().toString();
-                    String reason = reportDB.getAllReasons(reportedId, platform, model);
-
-                    String prompt = "Generate a report message for player:\n" +
-                            reportedPlayer.getName() + "\n\n" +
-                            "Reason history:\n" + reason;
-
-                    MCEngineArtificialIntelligenceApi.getApi().runBotTask(
-                        player, "server", platform, model, prompt
-                    );
-
-                    player.sendMessage("§aGenerating report message using AI...");
-                    return true;
-                }
-            } catch (IllegalStateException ex) {
-                // args[1] and args[2] were not valid platform/model identifiers
-                logger.warning("Invalid AI platform/model combination from player " + player.getName()
-                        + " — platform=" + platform + ", model=" + model + ". Falling back to manual report.");
-            }
+            boolean handled = ReportCommandUtil.handleAiReport(player, reportedPlayer, platform, model, reportDB, logger);
+            if (handled) return true;
         }
 
         // Manual report fallback
