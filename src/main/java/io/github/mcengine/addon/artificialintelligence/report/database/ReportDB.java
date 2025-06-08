@@ -1,32 +1,49 @@
 package io.github.mcengine.addon.artificialintelligence.report.database;
 
-import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
 import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 public class ReportDB {
 
-    public void createDBTable(MCEngineAddOnLogger logger) {
-        try {
-            Connection connection = MCEngineArtificialIntelligenceApi.getApi().getDBConnection();
-            Statement statement = connection.createStatement();
+    private final Connection conn;
+    private final MCEngineAddOnLogger logger;
 
-            String sql = "CREATE TABLE IF NOT EXISTS report (" +
-                         "report_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                         "report_reporter_id VARCHAR(36), " +
-                         "report_reported_id VARCHAR(36), " +
-                         "report_text TEXT, " +
-                         "report_status BOOLEAN DEFAULT FALSE" +
-                         ");";
+    public ReportDB(Connection conn, MCEngineAddOnLogger logger) {
+        this.conn = conn;
+        this.logger = logger;
+        createDBTable();
+    }
 
+    public void createDBTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS artificialintelligence_report (" +
+                     "report_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                     "report_reporter_id VARCHAR(36), " +
+                     "report_reported_id VARCHAR(36), " +
+                     "report_text TEXT, " +
+                     "report_status BOOLEAN DEFAULT FALSE" +
+                     ");";
+        try (Statement statement = conn.createStatement()) {
             statement.executeUpdate(sql);
-            statement.close();
-
             logger.info("Report table created or already exists.");
         } catch (Exception e) {
-            logger.info("Failed to create report table: " + e.getMessage());
+            logger.warning("Failed to create report table: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void insertReport(String reporterId, String reportedId, String message) {
+        String sql = "INSERT INTO artificialintelligence_report (report_reporter_id, report_reported_id, report_text, report_status) VALUES (?, ?, ?, false);";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, reporterId);
+            stmt.setString(2, reportedId);
+            stmt.setString(3, message);
+            stmt.executeUpdate();
+            logger.info("Report inserted for reporter=" + reporterId + " reported=" + reportedId);
+        } catch (Exception e) {
+            logger.warning("Failed to insert report: " + e.getMessage());
             e.printStackTrace();
         }
     }
