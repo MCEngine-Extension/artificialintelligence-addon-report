@@ -24,7 +24,7 @@ public class ReportCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player reporter)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("§cOnly players can use this command.");
             return true;
         }
@@ -43,35 +43,34 @@ public class ReportCommand implements CommandExecutor {
 
         // AI-generated summary
         if (args.length == 3 && MCEngineArtificialIntelligenceApi.getApi().getAi(args[1], args[2]) != null) {
-            if (!reporter.hasPermission("mcengine.artificialintelligence.addon.report.summary")) {
-                reporter.sendMessage("§cYou do not have permission to use AI-generated reports.");
+            if (!player.hasPermission("mcengine.artificialintelligence.addon.report.summary")) {
+                player.sendMessage("§cYou do not have permission to use AI-generated reports.");
                 return true;
             }
 
             String platform = args[1];
             String model = args[2];
-            String reporterId = reporter.getUniqueId().toString();
             String reportedId = reportedPlayer.getUniqueId().toString();
 
-            String reason = reportDB.getAllReasons(reporterId, reportedId);
+            String reason = reportDB.getAllReasons(reportedId);
 
             String prompt = "Generate a report message for player:\n" +
                     reportedPlayer.getName() + "\n\n" +
                     "Reason history:\n" + reason;
 
             MCEngineArtificialIntelligenceApi.getApi().runBotTask(
-                reporter, "server", platform, model, prompt
+                player, "server", platform, model, prompt
             );
 
-            reporter.sendMessage("§aGenerating report message using AI...");
+            player.sendMessage("§aGenerating report message using AI...");
             return true;
         }
 
         // Manual report
         String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-        reportDB.insertReport(reporter.getUniqueId().toString(), reportedPlayer.getUniqueId().toString(), message);
-        reporter.sendMessage("§aYour report has been submitted.");
-        logger.info(reporter.getName() + " reported " + reportedPlayer.getName() + ": " + message);
+        reportDB.insertReport(player.getUniqueId().toString(), reportedPlayer.getUniqueId().toString(), message);
+        player.sendMessage("§aYour report has been submitted.");
+        logger.info(player.getName() + " reported " + reportedPlayer.getName() + ": " + message);
         return true;
     }
 }
