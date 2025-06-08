@@ -1,3 +1,5 @@
+[![Spigot](https://raw.githubusercontent.com/intergrav/devins-badges/refs/heads/v3/assets/cozy/available/spigot_vector.svg)](https://www.spigotmc.org/resources/mcengine-artificialintelligence-addon-report.125841/)
+
 # 📖 Information
 
 This `AddOn` is designed to report players to admins using AI-powered summaries.
