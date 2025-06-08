@@ -28,7 +28,7 @@ public class ReportCommandUtil {
 
                 String prompt = "Generate a report message for player:\n" +
                         reportedPlayer.getName() + "\n\n" +
-                        "Reason history:\n" + reason;
+                        "Reason:\n" + reason;
 
                 MCEngineArtificialIntelligenceApi.getApi().runBotTask(
                         player, "server", platform, model, prompt
