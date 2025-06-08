@@ -23,7 +23,8 @@ public class ReportDB {
                      "report_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                      "report_reporter_id VARCHAR(36), " +
                      "report_reported_id VARCHAR(36), " +
-                     "report_text TEXT" +
+                     "report_text TEXT, " +
+                     "report_reported_created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
                      ");";
         try (Statement statement = conn.createStatement()) {
             statement.executeUpdate(sql);
@@ -35,7 +36,9 @@ public class ReportDB {
     }
 
     public void insertReport(String reporterId, String reportedId, String message) {
-        String sql = "INSERT INTO artificialintelligence_report (report_reporter_id, report_reported_id, report_text) VALUES (?, ?, ?);";
+        String sql = "INSERT INTO artificialintelligence_report " +
+                     "(report_reporter_id, report_reported_id, report_text, report_reported_created_time) " +
+                     "VALUES (?, ?, ?, CURRENT_TIMESTAMP);";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, reporterId);
             stmt.setString(2, reportedId);
