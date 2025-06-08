@@ -54,7 +54,7 @@ public class ReportCommand implements CommandExecutor {
                     }
 
                     String reportedId = reportedPlayer.getUniqueId().toString();
-                    String reason = reportDB.getAllReasons(reportedId);
+                    String reason = reportDB.getAllReasons(reportedId, platform, model);
 
                     String prompt = "Generate a report message for player:\n" +
                             reportedPlayer.getName() + "\n\n" +
