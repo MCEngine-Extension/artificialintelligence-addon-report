@@ -3,11 +3,26 @@ package io.github.mcengine.addon.artificialintelligence.report.util;
 import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
 import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
 import io.github.mcengine.addon.artificialintelligence.report.database.ReportDB;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+/**
+ * Utility class to handle report commands that use AI.
+ */
 public class ReportCommandUtil {
 
+    /**
+     * Handles the AI-generated report logic for a player.
+     *
+     * @param player         The player issuing the report command.
+     * @param reportedPlayer The player being reported.
+     * @param platform       The AI platform to use.
+     * @param model          The model to use on that platform.
+     * @param reportDB       The report database for fetching reasons.
+     * @param logger         The logger for warnings or debug messages.
+     * @return true if AI handling was triggered, false if fallback/manual should occur.
+     */
     public static boolean handleAiReport(
             Player player,
             OfflinePlayer reportedPlayer,
@@ -17,12 +32,24 @@ public class ReportCommandUtil {
             MCEngineAddOnLogger logger
     ) {
         try {
-            if (MCEngineArtificialIntelligenceApi.getApi().getAi(platform, model) != null) {
+            MCEngineArtificialIntelligenceApi api = MCEngineArtificialIntelligenceApi.getApi();
+
+            // Validate AI model availability
+            if (api.getAi(platform, model) != null) {
+
+                // Check if player has permission to use AI-generated reports
                 if (!player.hasPermission("mcengine.artificialintelligence.addon.report.summary")) {
-                    player.sendMessage("§cYou do not have permission to use AI-generated reports.");
+                    player.sendMessage(ChatColor.RED + "You do not have permission to use AI-generated reports.");
                     return true;
                 }
 
+                // Prevent overlapping AI tasks
+                if (api.checkWaitingPlayer(player)) {
+                    player.sendMessage(ChatColor.RED + "⏳ Please wait for the AI to respond before sending another message.");
+                    return true;
+                }
+
+                // Prepare prompt
                 String reportedId = reportedPlayer.getUniqueId().toString();
                 String reason = reportDB.getAllReasons(reportedId, platform, model);
 
@@ -30,11 +57,10 @@ public class ReportCommandUtil {
                         reportedPlayer.getName() + "\n\n" +
                         "Reason:\n" + reason;
 
-                MCEngineArtificialIntelligenceApi.getApi().runBotTask(
-                        player, "server", platform, model, prompt
-                );
+                // Start AI task asynchronously
+                api.runBotTask(player, "server", platform, model, prompt);
 
-                player.sendMessage("§aGenerating report message using AI...");
+                player.sendMessage(ChatColor.GREEN + "Generating report message using AI...");
                 return true;
             }
         } catch (IllegalStateException ex) {
