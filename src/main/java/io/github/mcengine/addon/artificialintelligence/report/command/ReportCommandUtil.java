@@ -43,12 +43,6 @@ public class ReportCommandUtil {
                     return true;
                 }
 
-                // Prevent overlapping AI tasks
-                if (api.checkWaitingPlayer(player)) {
-                    player.sendMessage(ChatColor.RED + "⏳ Please wait for the AI to respond before sending another message.");
-                    return true;
-                }
-
                 // Prepare prompt
                 String reportedId = reportedPlayer.getUniqueId().toString();
                 String reason = reportDB.getAllReasons(reportedId, platform, model);
