@@ -61,7 +61,7 @@ public class Report implements IMCEngineArtificialIntelligenceAddOn {
             e.printStackTrace();
         }
 
-        MCEngineApi.checkUpdate(plugin, logger.getLogger(), "[AddOn] [MCEngineReport]",
+        MCEngineApi.checkUpdate(plugin, logger.getLogger(), "[AddOn] [MCEngineReport] ",
         "github", "MCEngine-AddOn", "artificialintelligence-report",
         plugin.getConfig().getString("github.token", "null"));
     }
