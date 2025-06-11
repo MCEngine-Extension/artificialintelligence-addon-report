@@ -23,3 +23,21 @@ The database marks each report as "used" once it has been sent, so only new/unpr
 This AddOn uses a secure server token to communicate with the AI 🔒.
 
 Only players with the appropriate permission can use this command.
+
+<div align="center">
+
+# 👥 Members
+
+<table>
+  <tr>
+    <td align="center" width="150">
+      <a href="https://github.com/JetsadaWijit">
+        <img src="https://imgur.com/SyqKl13.png" width="100px" style="border-radius:50%;" alt="Jetsada Wijit"/><br />
+        <sub><b>Jetsada Wijit</b></sub>
+      </a><br/>jetsadawijit@outlook.com<br/>
+      🔗 <a href="https://jetsadawijit.github.io">Website</a>
+    </td>
+  </tr>
+</table>
+
+</div>
