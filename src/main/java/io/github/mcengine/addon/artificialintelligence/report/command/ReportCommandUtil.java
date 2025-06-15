@@ -19,11 +19,17 @@ public class ReportCommandUtil {
 
     private final String tokenType;
 
+    /**
+     * Constructs the report utility and loads token type from config.
+     *
+     * @param plugin The plugin instance used to load configuration.
+     */
     public ReportCommandUtil(Plugin plugin) {
         // Load custom config file
         File configFile = new File(plugin.getDataFolder(), "addons/MCEngineChatBot/config.yml");
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
 
+        // Load tokenType from config
         this.tokenType = config.getString("token.type", "server");
     }
 
@@ -38,7 +44,7 @@ public class ReportCommandUtil {
      * @param logger         The logger for warnings or debug messages.
      * @return true if AI handling was triggered, false if fallback/manual should occur.
      */
-    public static boolean handleAiReport(
+    public boolean handleAiReport(
             Player player,
             OfflinePlayer reportedPlayer,
             String platform,
@@ -67,7 +73,7 @@ public class ReportCommandUtil {
                         "Reason:\n" + reason;
 
                 // Start AI task asynchronously
-                api.runBotTask(player, "server", platform, model, prompt);
+                api.runBotTask(player, tokenType, platform, model, prompt);
 
                 player.sendMessage(ChatColor.GREEN + "Generating report message using AI...");
                 return true;
