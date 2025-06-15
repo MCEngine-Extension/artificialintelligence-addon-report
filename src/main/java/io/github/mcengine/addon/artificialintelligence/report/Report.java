@@ -6,6 +6,7 @@ import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
 import io.github.mcengine.addon.artificialintelligence.report.command.ReportCommand;
 import io.github.mcengine.addon.artificialintelligence.report.database.ReportDB;
 import io.github.mcengine.addon.artificialintelligence.report.tabcompleter.ReportTabCompleter;
+import io.github.mcengine.addon.artificialintelligence.report.util.ReportUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -23,6 +24,8 @@ public class Report implements IMCEngineArtificialIntelligenceAddOn {
     @Override
     public void onLoad(Plugin plugin) {
         MCEngineAddOnLogger logger = new MCEngineAddOnLogger(plugin, "MCEngineReport");
+
+        ReportUtil.createConfig(plugin);
 
         try {
             Connection conn = io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi.getApi().getDBConnection();
