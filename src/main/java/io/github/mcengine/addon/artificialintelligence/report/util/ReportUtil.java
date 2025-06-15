@@ -1,5 +1,11 @@
 package io.github.mcengine.addon.artificialintelligence.report.util;
 
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+
+import java.io.File;
+import java.io.IOException;
+
 public class ReportUtil {
 
     public static void createConfig(Plugin plugin) {

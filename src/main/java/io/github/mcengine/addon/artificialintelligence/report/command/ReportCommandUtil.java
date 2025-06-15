@@ -4,13 +4,28 @@ import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntellige
 import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
 import io.github.mcengine.addon.artificialintelligence.report.database.ReportDB;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
+import java.io.File;
 
 /**
  * Utility class to handle report commands that use AI.
  */
 public class ReportCommandUtil {
+
+    private final String tokenType;
+
+    public ReportCommandUtil(Plugin plugin) {
+        // Load custom config file
+        File configFile = new File(plugin.getDataFolder(), "addons/MCEngineChatBot/config.yml");
+        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+        this.tokenType = config.getString("token.type", "server");
+    }
 
     /**
      * Handles the AI-generated report logic for a player.
