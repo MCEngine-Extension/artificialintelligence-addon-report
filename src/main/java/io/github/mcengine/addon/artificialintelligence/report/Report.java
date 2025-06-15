@@ -6,6 +6,8 @@ import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
 import io.github.mcengine.addon.artificialintelligence.report.command.ReportCommand;
 import io.github.mcengine.addon.artificialintelligence.report.database.ReportDB;
 import io.github.mcengine.addon.artificialintelligence.report.tabcompleter.ReportTabCompleter;
+import io.github.mcengine.addon.artificialintelligence.report.util.ReportCommandUtil;
+import io.github.mcengine.addon.artificialintelligence.report.util.ReportUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -18,15 +20,24 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.util.List;
 
+/**
+ * Main class for the MCEngineReport AddOn.
+ */
 public class Report implements IMCEngineArtificialIntelligenceAddOn {
 
     @Override
     public void onLoad(Plugin plugin) {
         MCEngineAddOnLogger logger = new MCEngineAddOnLogger(plugin, "MCEngineReport");
 
+        // Create default config if missing
+        ReportUtil.createConfig(plugin);
+
         try {
             Connection conn = io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi.getApi().getDBConnection();
             ReportDB dbApi = new ReportDB(conn, logger);
+
+            // Load utility class once and share instance
+            ReportCommandUtil util = new ReportCommandUtil(plugin);
 
             // Register /report command dynamically
             PluginManager pluginManager = Bukkit.getPluginManager();
@@ -35,7 +46,7 @@ public class Report implements IMCEngineArtificialIntelligenceAddOn {
             CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
 
             Command reportCommand = new Command("report") {
-                private final ReportCommand handler = new ReportCommand(logger, dbApi);
+                private final ReportCommand handler = new ReportCommand(logger, dbApi, plugin, util);
                 private final ReportTabCompleter completer = new ReportTabCompleter();
 
                 @Override
@@ -62,7 +73,7 @@ public class Report implements IMCEngineArtificialIntelligenceAddOn {
         }
 
         MCEngineApi.checkUpdate(plugin, logger.getLogger(), "[AddOn] [MCEngineReport] ",
-        "github", "MCEngine-AddOn", "artificialintelligence-report",
-        plugin.getConfig().getString("github.token", "null"));
+            "github", "MCEngine-AddOn", "artificialintelligence-report",
+            plugin.getConfig().getString("github.token", "null"));
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
 
@@ -31,14 +32,28 @@ public class ReportCommand implements CommandExecutor {
     private final ReportDB reportDB;
 
     /**
+     * Reference to the plugin instance for config access.
+     */
+    private final Plugin plugin;
+
+    /**
+     * Utility for AI report handling.
+     */
+    private final ReportCommandUtil util;
+
+    /**
      * Constructs a new ReportCommand handler.
      *
      * @param logger   The logger instance to use.
      * @param reportDB The report database handler.
+     * @param plugin   The plugin instance for config access.
+     * @param util     Shared ReportCommandUtil instance.
      */
-    public ReportCommand(MCEngineAddOnLogger logger, ReportDB reportDB) {
+    public ReportCommand(MCEngineAddOnLogger logger, ReportDB reportDB, Plugin plugin, ReportCommandUtil util) {
         this.logger = logger;
         this.reportDB = reportDB;
+        this.plugin = plugin;
+        this.util = util;
     }
 
     @Override
@@ -71,7 +86,7 @@ public class ReportCommand implements CommandExecutor {
             String platform = args[1];
             String model = args[2];
 
-            boolean handled = ReportCommandUtil.handleAiReport(player, reportedPlayer, platform, model, reportDB, logger);
+            boolean handled = util.handleAiReport(player, reportedPlayer, platform, model, reportDB, logger);
             if (handled) return true;
         }
 
