@@ -10,7 +10,7 @@ public class ReportUtil {
 
     public static void createConfig(Plugin plugin) {
         // Path: <plugin_data_folder>/addons/MCEngineChatBot/config.yml
-        File configFile = new File(plugin.getDataFolder(), "addons/MCEngineChatBot/config.yml");
+        File configFile = new File(plugin.getDataFolder(), "addons/MCEngineReport/config.yml");
 
         if (configFile.exists()) return;
 
