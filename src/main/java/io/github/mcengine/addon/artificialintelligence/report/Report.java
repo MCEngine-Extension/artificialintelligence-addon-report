@@ -1,6 +1,6 @@
 package io.github.mcengine.addon.artificialintelligence.report;
 
-import io.github.mcengine.api.artificialintelligence.addon.IMCEngineArtificialIntelligenceAddOn;
+import io.github.mcengine.api.artificialintelligence.extension.addon.IMCEngineArtificialIntelligenceAddOn;
 import io.github.mcengine.api.mcengine.MCEngineApi;
 import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
 import io.github.mcengine.addon.artificialintelligence.report.command.ReportCommand;
