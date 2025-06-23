@@ -1,4 +1,4 @@
-package io.github.mcengine.addon.artificialintelligence.report.tabcompleter;
+package io.github.mcengine.extension.addon.artificialintelligence.report.tabcompleter;
 
 import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
 import io.github.mcengine.api.artificialintelligence.model.IMCEngineArtificialIntelligenceApiModel;

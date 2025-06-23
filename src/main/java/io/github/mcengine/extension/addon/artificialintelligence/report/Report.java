@@ -1,13 +1,13 @@
-package io.github.mcengine.addon.artificialintelligence.report;
+package io.github.mcengine.extension.addon.artificialintelligence.report;
 
 import io.github.mcengine.api.artificialintelligence.extension.addon.IMCEngineArtificialIntelligenceAddOn;
 import io.github.mcengine.api.mcengine.MCEngineApi;
-import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
-import io.github.mcengine.addon.artificialintelligence.report.command.ReportCommand;
-import io.github.mcengine.addon.artificialintelligence.report.database.ReportDB;
-import io.github.mcengine.addon.artificialintelligence.report.tabcompleter.ReportTabCompleter;
-import io.github.mcengine.addon.artificialintelligence.report.util.ReportCommandUtil;
-import io.github.mcengine.addon.artificialintelligence.report.util.ReportUtil;
+import io.github.mcengine.api.mcengine.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.extension.addon.artificialintelligence.report.command.ReportCommand;
+import io.github.mcengine.extension.addon.artificialintelligence.report.database.ReportDB;
+import io.github.mcengine.extension.addon.artificialintelligence.report.tabcompleter.ReportTabCompleter;
+import io.github.mcengine.extension.addon.artificialintelligence.report.util.ReportCommandUtil;
+import io.github.mcengine.extension.addon.artificialintelligence.report.util.ReportUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

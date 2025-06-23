@@ -1,4 +1,4 @@
-package io.github.mcengine.addon.artificialintelligence.report.util;
+package io.github.mcengine.extension.addon.artificialintelligence.report.util;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
