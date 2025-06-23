@@ -1,9 +1,9 @@
-package io.github.mcengine.addon.artificialintelligence.report.command;
+package io.github.mcengine.extension.addon.artificialintelligence.report.command;
 
 import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
-import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
-import io.github.mcengine.addon.artificialintelligence.report.database.ReportDB;
-import io.github.mcengine.addon.artificialintelligence.report.util.ReportCommandUtil;
+import io.github.mcengine.api.mcengine.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.extension.addon.artificialintelligence.report.database.ReportDB;
+import io.github.mcengine.extension.addon.artificialintelligence.report.util.ReportCommandUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

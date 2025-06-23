@@ -1,8 +1,8 @@
-package io.github.mcengine.addon.artificialintelligence.report.util;
+package io.github.mcengine.extension.addon.artificialintelligence.report.util;
 
 import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
-import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
-import io.github.mcengine.addon.artificialintelligence.report.database.ReportDB;
+import io.github.mcengine.api.mcengine.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.extension.addon.artificialintelligence.report.database.ReportDB;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
