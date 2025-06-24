@@ -1,6 +1,6 @@
 package io.github.mcengine.extension.addon.artificialintelligence.report.util;
 
-import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
+import io.github.mcengine.common.artificialintelligence.MCEngineArtificialIntelligenceCommon;
 import io.github.mcengine.api.mcengine.extension.addon.MCEngineAddOnLogger;
 import io.github.mcengine.extension.addon.artificialintelligence.report.database.ReportDB;
 import org.bukkit.ChatColor;
@@ -53,7 +53,7 @@ public class ReportCommandUtil {
             MCEngineAddOnLogger logger
     ) {
         try {
-            MCEngineArtificialIntelligenceApi api = MCEngineArtificialIntelligenceApi.getApi();
+            MCEngineArtificialIntelligenceCommon api = MCEngineArtificialIntelligenceCommon.getApi();
 
             // Validate AI model availability
             if (api.getAi(platform, model) != null) {
