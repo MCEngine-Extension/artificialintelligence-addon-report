@@ -45,12 +45,14 @@ allprojects {
         }
 
         configureGitHubRepo('MCEngine Core API', 'https://maven.pkg.github.com/MCEngine/core-api')
+        configureGitHubRepo('MCEngine Artificialintelligence Api', 'https://maven.pkg.github.com/MCEngine/artificialintelligence-api')
         configureGitHubRepo('MCEngine Artificialintelligence Common', 'https://maven.pkg.github.com/MCEngine/artificialintelligence-common')
     }
 }
 
 dependencies {
     compileOnly 'io.github.mcengine:core-api:1.0.5-RELEASE'
+    compileOnly 'io.github.mcengine:artificialintelligence-api:1.0.4-RELEASE'
     compileOnly 'io.github.mcengine:artificialintelligence-common:1.0.2-RELEASE'
     compileOnly 'org.spigotmc:spigot-api:1.21.6-R0.1-SNAPSHOT'
 }

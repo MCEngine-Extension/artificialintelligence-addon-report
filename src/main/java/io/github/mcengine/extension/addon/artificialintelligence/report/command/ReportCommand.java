@@ -1,6 +1,6 @@
 package io.github.mcengine.extension.addon.artificialintelligence.report.command;
 
-import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
+import io.github.mcengine.common.artificialintelligence.MCEngineArtificialIntelligenceCommon;
 import io.github.mcengine.api.mcengine.extension.addon.MCEngineAddOnLogger;
 import io.github.mcengine.extension.addon.artificialintelligence.report.database.ReportDB;
 import io.github.mcengine.extension.addon.artificialintelligence.report.util.ReportCommandUtil;
@@ -76,7 +76,7 @@ public class ReportCommand implements CommandExecutor {
         }
 
         // Prevent overlapping AI tasks
-        if (args.length == 3 && MCEngineArtificialIntelligenceApi.getApi().checkWaitingPlayer(player)) {
+        if (args.length == 3 && MCEngineArtificialIntelligenceCommon.getApi().checkWaitingPlayer(player)) {
             player.sendMessage(ChatColor.RED + "⏳ Please wait for the AI to respond before sending another message.");
             return true;
         }

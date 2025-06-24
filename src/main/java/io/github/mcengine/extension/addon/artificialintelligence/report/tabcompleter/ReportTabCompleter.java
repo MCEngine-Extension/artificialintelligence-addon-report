@@ -1,6 +1,6 @@
 package io.github.mcengine.extension.addon.artificialintelligence.report.tabcompleter;
 
-import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
+import io.github.mcengine.common.artificialintelligence.MCEngineArtificialIntelligenceCommon;
 import io.github.mcengine.api.artificialintelligence.model.IMCEngineArtificialIntelligenceApiModel;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -36,7 +36,7 @@ public class ReportTabCompleter implements TabCompleter {
 
                 // Add AI platforms only if user has permission
                 if (sender.hasPermission("mcengine.artificialintelligence.addon.report.summary")) {
-                    Set<String> platforms = MCEngineArtificialIntelligenceApi.getApi().getAiAll().keySet();
+                    Set<String> platforms = MCEngineArtificialIntelligenceCommon.getApi().getAiAll().keySet();
                     platforms.stream()
                             .filter(p -> p.toLowerCase().startsWith(input))
                             .sorted()
@@ -58,7 +58,7 @@ public class ReportTabCompleter implements TabCompleter {
                 }
 
                 String platform = args[1].toLowerCase();
-                Map<String, IMCEngineArtificialIntelligenceApiModel> models = MCEngineArtificialIntelligenceApi.getApi()
+                Map<String, IMCEngineArtificialIntelligenceApiModel> models = MCEngineArtificialIntelligenceCommon.getApi()
                         .getAiAll()
                         .getOrDefault(platform, Collections.emptyMap());
 
