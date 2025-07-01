@@ -36,6 +36,8 @@ public class ReportCommand implements CommandExecutor {
      */
     private final Plugin plugin;
 
+    private final String folderPath;
+
     /**
      * Utility for AI report handling.
      */
@@ -49,9 +51,10 @@ public class ReportCommand implements CommandExecutor {
      * @param plugin   The plugin instance for config access.
      * @param util     Shared ReportCommandUtil instance.
      */
-    public ReportCommand(MCEngineAddOnLogger logger, ReportDB reportDB, Plugin plugin, ReportCommandUtil util) {
+    public ReportCommand(MCEngineAddOnLogger logger, String folderPath, ReportDB reportDB, Plugin plugin, ReportCommandUtil util) {
         this.logger = logger;
         this.reportDB = reportDB;
+        this.folderPath = folderPath;
         this.plugin = plugin;
         this.util = util;
     }

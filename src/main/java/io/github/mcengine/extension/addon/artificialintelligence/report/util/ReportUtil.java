@@ -8,9 +8,9 @@ import java.io.IOException;
 
 public class ReportUtil {
 
-    public static void createConfig(Plugin plugin) {
+    public static void createConfig(Plugin plugin, String folderPath) {
         // Path: <plugin_data_folder>/addons/MCEngineChatBot/config.yml
-        File configFile = new File(plugin.getDataFolder(), "configs/addons/MCEngineReport/config.yml");
+        File configFile = new File(plugin.getDataFolder(), folderPath + "/config.yml");
 
         if (configFile.exists()) return;
 
