@@ -1,8 +1,8 @@
 package io.github.mcengine.extension.addon.artificialintelligence.report;
 
 import io.github.mcengine.api.artificialintelligence.extension.addon.IMCEngineArtificialIntelligenceAddOn;
-import io.github.mcengine.api.mcengine.MCEngineApi;
-import io.github.mcengine.api.mcengine.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.api.core.MCEngineApi;
+import io.github.mcengine.api.core.extension.addon.MCEngineAddOnLogger;
 import io.github.mcengine.common.artificialintelligence.MCEngineArtificialIntelligenceCommon;
 import io.github.mcengine.extension.addon.artificialintelligence.report.command.ReportCommand;
 import io.github.mcengine.extension.addon.artificialintelligence.report.database.ReportDB;
@@ -73,7 +73,7 @@ public class Report implements IMCEngineArtificialIntelligenceAddOn {
             e.printStackTrace();
         }
 
-        MCEngineApi.checkUpdate(plugin, logger.getLogger(), "[AddOn] [MCEngineReport] ",
+        MCEngineApi.checkUpdate(plugin, logger.getLogger(),
             "github", "MCEngine-Extension", "artificialintelligence-addon-report",
             plugin.getConfig().getString("github.token", "null"));
     }

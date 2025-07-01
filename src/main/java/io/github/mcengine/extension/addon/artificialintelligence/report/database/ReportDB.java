@@ -1,6 +1,6 @@
 package io.github.mcengine.extension.addon.artificialintelligence.report.database;
 
-import io.github.mcengine.api.mcengine.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.api.core.extension.addon.MCEngineAddOnLogger;
 
 import java.sql.*;
 
