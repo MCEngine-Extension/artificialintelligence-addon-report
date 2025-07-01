@@ -24,9 +24,9 @@ public class ReportCommandUtil {
      *
      * @param plugin The plugin instance used to load configuration.
      */
-    public ReportCommandUtil(Plugin plugin) {
+    public ReportCommandUtil(Plugin plugin, String folderPath) {
         // Load custom config file
-        File configFile = new File(plugin.getDataFolder(), "configs/addons/MCEngineReport/config.yml");
+        File configFile = new File(plugin.getDataFolder(), folderPath + "/config.yml");
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
 
         // Load tokenType from config

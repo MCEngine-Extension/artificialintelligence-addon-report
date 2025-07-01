@@ -30,15 +30,17 @@ public class Report implements IMCEngineArtificialIntelligenceAddOn {
     public void onLoad(Plugin plugin) {
         MCEngineAddOnLogger logger = new MCEngineAddOnLogger(plugin, "MCEngineReport");
 
+        String folderPath = "extensions/addons/configs/MCEngineReport";
+
         // Create default config if missing
-        ReportUtil.createConfig(plugin);
+        ReportUtil.createConfig(plugin, folderPath);
 
         try {
             Connection conn = MCEngineArtificialIntelligenceCommon.getApi().getDBConnection();
             ReportDB dbApi = new ReportDB(conn, logger);
 
             // Load utility class once and share instance
-            ReportCommandUtil util = new ReportCommandUtil(plugin);
+            ReportCommandUtil util = new ReportCommandUtil(plugin, folderPath);
 
             // Register /report command dynamically
             PluginManager pluginManager = Bukkit.getPluginManager();
@@ -47,7 +49,7 @@ public class Report implements IMCEngineArtificialIntelligenceAddOn {
             CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
 
             Command reportCommand = new Command("report") {
-                private final ReportCommand handler = new ReportCommand(logger, dbApi, plugin, util);
+                private final ReportCommand handler = new ReportCommand(logger, folderPath, dbApi, plugin, util);
                 private final ReportTabCompleter completer = new ReportTabCompleter();
 
                 @Override
