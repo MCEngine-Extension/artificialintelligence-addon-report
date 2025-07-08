@@ -52,8 +52,8 @@ allprojects {
 
 dependencies {
     compileOnly 'io.github.mcengine:core-api:1.0.6-RELEASE'
-    compileOnly 'io.github.mcengine:artificialintelligence-api:1.0.4-RELEASE'
-    compileOnly 'io.github.mcengine:artificialintelligence-common:1.0.3-RELEASE'
+    compileOnly 'io.github.mcengine:artificialintelligence-api:1.0.6-RELEASE'
+    compileOnly 'io.github.mcengine:artificialintelligence-common:1.0.5-RELEASE'
     compileOnly 'org.spigotmc:spigot-api:1.21.7-R0.1-SNAPSHOT'
 }
 
