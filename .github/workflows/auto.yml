@@ -8,17 +8,11 @@ on:
 jobs:
   update-version:
     uses: MCEngine/actions/.github/workflows/update-version.yml@master
-    secrets:
-      USER_GITHUB_TOKEN: ${{ secrets.USER_GITHUB_TOKEN }}
 
   bump-dev-version:
     needs: update-version
     uses: MCEngine/actions/.github/workflows/bump-version-dev.yml@master
-    secrets:
-      USER_GITHUB_TOKEN: ${{ secrets.USER_GITHUB_TOKEN }}
 
   bump-mcengine-deps-version:
     needs: bump-dev-version
     uses: MCEngine/actions/.github/workflows/bump-mcengine-deps-version.yml@master
-    secrets:
-      USER_GITHUB_TOKEN: ${{ secrets.USER_GITHUB_TOKEN }}
