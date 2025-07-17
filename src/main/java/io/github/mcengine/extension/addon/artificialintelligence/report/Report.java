@@ -79,4 +79,8 @@ public class Report implements IMCEngineArtificialIntelligenceAddOn {
             "github", "MCEngine-Extension", "artificialintelligence-addon-report",
             plugin.getConfig().getString("github.token", "null"));
     }
+
+    public void setId(String id) {
+        MCEngineApi.setId("mcengine-report");
+    }
 }
