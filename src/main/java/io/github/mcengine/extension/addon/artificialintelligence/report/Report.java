@@ -1,8 +1,8 @@
 package io.github.mcengine.extension.addon.artificialintelligence.report;
 
-import io.github.mcengine.api.artificialintelligence.extension.addon.IMCEngineArtificialIntelligenceAddOn;
+import io.github.mcengine.api.artificialintelligence.extension.addon.IMCEngineArtificialintelligenceAddOn;
 import io.github.mcengine.api.core.MCEngineApi;
-import io.github.mcengine.api.core.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
 import io.github.mcengine.common.artificialintelligence.MCEngineArtificialIntelligenceCommon;
 import io.github.mcengine.extension.addon.artificialintelligence.report.command.ReportCommand;
 import io.github.mcengine.extension.addon.artificialintelligence.report.database.ReportDB;
@@ -24,11 +24,11 @@ import java.util.List;
 /**
  * Main class for the MCEngineReport AddOn.
  */
-public class Report implements IMCEngineArtificialIntelligenceAddOn {
+public class Report implements IMCEngineArtificialintelligenceAddOn {
 
     @Override
     public void onLoad(Plugin plugin) {
-        MCEngineAddOnLogger logger = new MCEngineAddOnLogger(plugin, "MCEngineReport");
+        MCEngineExtensionLogger logger = new MCEngineExtensionLogger(plugin, "AddOn", "MCEngineReport");
 
         String folderPath = "extensions/addons/configs/MCEngineReport";
 
