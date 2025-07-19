@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.io.File;
+import com.google.gson.JsonObject;
 
 /**
  * Utility class to handle report commands that use AI.
@@ -75,13 +75,34 @@ public class ReportCommandUtil {
                         "-- Report for player: " + reportedPlayer.getName() + "\n" +
                         reason;
 
-                api.runBotTask(player, tokenType, platform, model, prompt);
-                player.sendMessage(ChatColor.GREEN + "Generating report message using AI...");
+                JsonObject response;
+                if ("server".equalsIgnoreCase(tokenType)) {
+                    response = api.getResponse(platform, model, systemPrompt, prompt);
+                } else if ("player".equalsIgnoreCase(tokenType)) {
+                    String token = api.getPlayerToken(player.getUniqueId().toString(), platform);
+                    if (token == null || token.isEmpty()) {
+                        throw new IllegalStateException("No token found for player.");
+                    }
+                    response = api.getResponse(platform, model, token, systemPrompt, prompt);
+                } else {
+                    throw new IllegalArgumentException("Unknown tokenType: " + tokenType);
+                }
+
+                String reply = api.getCompletionContent(response);
+                player.sendMessage(ChatColor.GREEN + "[AI Report] " + ChatColor.RESET + reply);
+                int tokensUsed = api.getTotalTokenUsage(response);
+                if (tokensUsed >= 0) {
+                    player.sendMessage(ChatColor.GRAY + "[Tokens Used] " + tokensUsed);
+                }
+
                 return true;
             }
         } catch (IllegalStateException ex) {
             logger.warning("Invalid AI platform/model combination from player " + player.getName()
                     + " — platform=" + platform + ", model=" + model + ". Falling back to manual report.");
+        } catch (Exception e) {
+            logger.warning("AI report generation failed for player " + player.getName() + ": " + e.getMessage());
+            player.sendMessage(ChatColor.RED + "Failed to generate AI report: " + e.getMessage());
         }
 
         return false;
