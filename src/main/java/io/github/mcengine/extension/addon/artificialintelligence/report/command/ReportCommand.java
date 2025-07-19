@@ -1,7 +1,7 @@
 package io.github.mcengine.extension.addon.artificialintelligence.report.command;
 
 import io.github.mcengine.common.artificialintelligence.MCEngineArtificialIntelligenceCommon;
-import io.github.mcengine.api.core.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
 import io.github.mcengine.extension.addon.artificialintelligence.report.database.ReportDB;
 import io.github.mcengine.extension.addon.artificialintelligence.report.util.ReportCommandUtil;
 import org.bukkit.Bukkit;
@@ -24,7 +24,7 @@ public class ReportCommand implements CommandExecutor {
     /**
      * Logger for debugging or recording command activity.
      */
-    private final MCEngineAddOnLogger logger;
+    private final MCEngineExtensionLogger logger;
 
     /**
      * Report database interface for storing player reports.
@@ -51,7 +51,7 @@ public class ReportCommand implements CommandExecutor {
      * @param plugin   The plugin instance for config access.
      * @param util     Shared ReportCommandUtil instance.
      */
-    public ReportCommand(MCEngineAddOnLogger logger, String folderPath, ReportDB reportDB, Plugin plugin, ReportCommandUtil util) {
+    public ReportCommand(MCEngineExtensionLogger logger, String folderPath, ReportDB reportDB, Plugin plugin, ReportCommandUtil util) {
         this.logger = logger;
         this.reportDB = reportDB;
         this.folderPath = folderPath;

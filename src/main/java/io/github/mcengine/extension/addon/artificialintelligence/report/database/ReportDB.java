@@ -1,15 +1,15 @@
 package io.github.mcengine.extension.addon.artificialintelligence.report.database;
 
-import io.github.mcengine.api.core.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
 
 import java.sql.*;
 
 public class ReportDB {
 
     private final Connection conn;
-    private final MCEngineAddOnLogger logger;
+    private final MCEngineExtensionLogger logger;
 
-    public ReportDB(Connection conn, MCEngineAddOnLogger logger) {
+    public ReportDB(Connection conn, MCEngineExtensionLogger logger) {
         this.conn = conn;
         this.logger = logger;
         createDBTable();
