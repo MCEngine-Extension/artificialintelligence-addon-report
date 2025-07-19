@@ -40,7 +40,7 @@ public class ReportCommand implements CommandExecutor {
     private final Plugin plugin;
 
     /**
-     * Path to the report storage folder.
+     * Folder path where reports may be stored or referenced.
      */
     private final String folderPath;
 
@@ -50,7 +50,7 @@ public class ReportCommand implements CommandExecutor {
     private final ReportCommandUtil util;
 
     /**
-     * Set to track players currently waiting on AI responses.
+     * Set of players currently being processed for AI report to avoid duplicate command execution.
      */
     private final Set<UUID> processingPlayers = ConcurrentHashMap.newKeySet();
 
@@ -58,7 +58,7 @@ public class ReportCommand implements CommandExecutor {
      * Constructs a new ReportCommand handler.
      *
      * @param logger     The logger instance to use.
-     * @param folderPath Path to the report storage folder.
+     * @param folderPath Folder path for report data.
      * @param reportDB   The report database handler.
      * @param plugin     The plugin instance for config access.
      * @param util       Shared ReportCommandUtil instance.
@@ -90,24 +90,23 @@ public class ReportCommand implements CommandExecutor {
             return true;
         }
 
-        // Prevent overlapping AI tasks for multiple players
-        if (args.length == 3 && processingPlayers.contains(player.getUniqueId())) {
-            player.sendMessage(ChatColor.RED + "⏳ Please wait for the AI to respond before sending another message.");
-            return true;
-        }
-
-        // Attempt AI-generated summary
+        // Prevent overlapping AI tasks for this player
+        UUID playerId = player.getUniqueId();
         if (args.length == 3) {
+            if (processingPlayers.contains(playerId)) {
+                player.sendMessage(ChatColor.RED + "⏳ Please wait for the AI to respond before sending another message.");
+                return true;
+            }
+
+            processingPlayers.add(playerId);
             String platform = args[1];
             String model = args[2];
 
-            processingPlayers.add(player.getUniqueId());
-            boolean handled = util.handleAiReport(player, reportedPlayer, platform, model, reportDB, logger, () -> {
-                processingPlayers.remove(player.getUniqueId());
-            });
+            boolean handled = util.handleAiReport(player, reportedPlayer, platform, model, reportDB, logger);
 
+            // Always remove player from processing set regardless of outcome
+            Bukkit.getScheduler().runTaskLater(plugin, () -> processingPlayers.remove(playerId), 20L * 5); // 5 seconds
             if (handled) return true;
-            processingPlayers.remove(player.getUniqueId()); // Ensure cleanup if not handled
         }
 
         // Manual report fallback
