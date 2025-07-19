@@ -80,7 +80,11 @@ public class Report implements IMCEngineArtificialintelligenceAddOn {
             plugin.getConfig().getString("github.token", "null"));
     }
 
+    @Override
     public void setId(String id) {
         MCEngineApi.setId("mcengine-report");
     }
+
+    @Override
+    public void onDisload(Plugin plugin) {}
 }
