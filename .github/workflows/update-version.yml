@@ -1,0 +1,21 @@
+name: Nightly Version Update (Thailand Time)
+
+on:
+  schedule:
+    - cron: '0 17 * * *'
+  workflow_dispatch:
+
+jobs:
+  version-update:
+    uses: MCEngine/actions/.github/workflows/bump-project-version.yml@master
+    with:
+      repo-name: ${{ github.repository }}
+    secrets:
+      USER_GITHUB_TOKEN: ${{ secrets.USER_GITHUB_TOKEN }}
+  version-update-for-dev:
+    needs: version-update
+    uses: MCEngine/actions/.github/workflows/bump-project-version-for-dev.yml@master
+    with:
+      repo-name: ${{ github.repository }}
+    secrets:
+      USER_GITHUB_TOKEN: ${{ secrets.USER_GITHUB_TOKEN }}
