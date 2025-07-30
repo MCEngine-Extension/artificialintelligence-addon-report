@@ -44,9 +44,9 @@ allprojects {
             }
         }
 
-        configureGitHubRepo('MCEngine Core API', 'https://maven.pkg.github.com/MCEngine/core-api')
-        configureGitHubRepo('MCEngine Artificialintelligence Api', 'https://maven.pkg.github.com/MCEngine/artificialintelligence-api')
-        configureGitHubRepo('MCEngine Artificialintelligence Common', 'https://maven.pkg.github.com/MCEngine/artificialintelligence-common')
+        configureGitHubRepo('MCEngine Core API', 'https://maven.pkg.github.com/MCEngine-API/core')
+        configureGitHubRepo('MCEngine Artificialintelligence Api', 'https://maven.pkg.github.com-API/MCEngine/artificialintelligence')
+        configureGitHubRepo('MCEngine Artificialintelligence Common', 'https://maven.pkg.github.com/MCEngine-Common/artificialintelligence')
     }
 }
 
