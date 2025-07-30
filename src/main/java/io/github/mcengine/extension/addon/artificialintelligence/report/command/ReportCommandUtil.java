@@ -105,7 +105,7 @@ public class ReportCommandUtil {
                     Bukkit.getScheduler().runTask(api.getPlugin(), () -> {
                         player.sendMessage(ChatColor.GREEN + "[AI Report] " + ChatColor.RESET + reply);
                         if (tokensUsed >= 0) {
-                            player.sendMessage(ChatColor.GRAY + "[Tokens Used] " + tokensUsed);
+                            player.sendMessage(ChatColor.GREEN + "[Tokens Used] " + ChatColor.WHITE + tokensUsed);
                         }
                     });
 
