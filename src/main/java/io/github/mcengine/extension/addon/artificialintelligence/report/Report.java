@@ -1,7 +1,7 @@
 package io.github.mcengine.extension.addon.artificialintelligence.report;
 
-import io.github.mcengine.api.artificialintelligence.extension.addon.IMCEngineArtificialintelligenceAddOn;
-import io.github.mcengine.api.core.MCEngineApi;
+import io.github.mcengine.api.artificialintelligence.extension.addon.IMCEngineArtificialIntelligenceAddOn;
+import io.github.mcengine.api.core.MCEngineCoreApi;
 import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
 import io.github.mcengine.common.artificialintelligence.MCEngineArtificialIntelligenceCommon;
 import io.github.mcengine.extension.addon.artificialintelligence.report.command.ReportCommand;
@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Main class for the MCEngineReport AddOn.
  */
-public class Report implements IMCEngineArtificialintelligenceAddOn {
+public class Report implements IMCEngineArtificialIntelligenceAddOn {
 
     @Override
     public void onLoad(Plugin plugin) {
@@ -75,14 +75,14 @@ public class Report implements IMCEngineArtificialintelligenceAddOn {
             e.printStackTrace();
         }
 
-        MCEngineApi.checkUpdate(plugin, logger.getLogger(),
+        MCEngineCoreApi.checkUpdate(plugin, logger.getLogger(),
             "github", "MCEngine-Extension", "artificialintelligence-addon-report",
             plugin.getConfig().getString("github.token", "null"));
     }
 
     @Override
     public void setId(String id) {
-        MCEngineApi.setId("mcengine-report");
+        MCEngineCoreApi.setId("mcengine-report");
     }
 
     @Override
