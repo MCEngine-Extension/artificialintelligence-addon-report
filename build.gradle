@@ -51,9 +51,9 @@ allprojects {
 }
 
 dependencies {
-    compileOnly 'io.github.mcengine:core-api:2025.0.8-2'
-    compileOnly 'io.github.mcengine:artificialintelligence-api:2025.0.8-2'
-    compileOnly 'io.github.mcengine:artificialintelligence-common:2025.0.8-2'
+    compileOnly 'io.github.mcengine:core-api:2025.0.8-3'
+    compileOnly 'io.github.mcengine:artificialintelligence-api:2025.0.8-3'
+    compileOnly 'io.github.mcengine:artificialintelligence-common:2025.0.8-3'
 
     compileOnly 'org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT'
 }
