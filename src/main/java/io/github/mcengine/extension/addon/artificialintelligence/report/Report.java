@@ -11,16 +11,17 @@ import io.github.mcengine.extension.addon.artificialintelligence.report.util.Rep
 import io.github.mcengine.extension.addon.artificialintelligence.report.util.ReportUtil;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 
+import java.io.File;
 import java.sql.Connection;
 
 /**
  * Main class for the MCEngineReport AddOn.
- * <p>
- * Registers the 'report' subcommand under the /ai command using the dispatcher system.
- * Also sets up database access and configuration for reports.
+ *
+ * <p>Registers the 'report' subcommand under the /ai command using the dispatcher system.
+ * Also sets up database access and configuration for reports.</p>
  */
 public class Report implements IMCEngineArtificialIntelligenceAddOn {
 
@@ -35,6 +36,15 @@ public class Report implements IMCEngineArtificialIntelligenceAddOn {
 
         String folderPath = "extensions/addons/configs/MCEngineReport";
         ReportUtil.createConfig(plugin, folderPath);
+
+        File configFile = new File(plugin.getDataFolder(), folderPath + "/config.yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+        String licenseType = config.getString("license", "free");
+
+        if (!"free".equalsIgnoreCase(licenseType)) {
+            logger.warning("License is not 'free'. Disabling Report AddOn.");
+            return;
+        }
 
         try {
             // Set up DB and utility classes

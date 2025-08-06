@@ -21,6 +21,7 @@ public class ReportUtil {
         }
 
         YamlConfiguration config = new YamlConfiguration();
+        config.set("license", "free");
         config.set("ai.system.prompt", "You're an assistant to summarize reports and suggest what I should do.");
         config.set("token.type", "server");
 
