@@ -81,9 +81,7 @@ public class ReportCommandUtil {
                     String reportedId = reportedPlayer.getUniqueId().toString();
                     String reason = reportDB.getAllReasons(reportedId, platform, model);
 
-                    String prompt = systemPrompt + "\n\n" +
-                            "-- Report for player: " + reportedPlayer.getName() + "\n" +
-                            reason;
+                    String prompt = "-- Report for player: " + reportedPlayer.getName() + "\n" + reason;
 
                     JsonObject response;
                     if ("server".equalsIgnoreCase(tokenType)) {
