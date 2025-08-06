@@ -118,8 +118,14 @@ public class ReportCommand implements CommandExecutor {
             if (handled) return true;
         }
 
+        // If only player is specified, but no reason
+        if (args.length == 2) {
+            player.sendMessage(ChatColor.RED + "You need to give reason.");
+            return true;
+        }
+
         // Manual report fallback
-        String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+        String message = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
         reportDB.insertReport(playerId.toString(), reportedPlayer.getUniqueId().toString(), message);
         player.sendMessage(ChatColor.GREEN + "Your report has been submitted.");
         logger.info(player.getName() + " reported " + reportedPlayer.getName() + ": " + message);
