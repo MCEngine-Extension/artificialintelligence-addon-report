@@ -11,80 +11,71 @@ import io.github.mcengine.extension.addon.artificialintelligence.report.util.Rep
 import io.github.mcengine.extension.addon.artificialintelligence.report.util.ReportUtil;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
-import java.lang.reflect.Field;
 import java.sql.Connection;
-import java.util.List;
 
 /**
  * Main class for the MCEngineReport AddOn.
+ * <p>
+ * Registers the 'report' subcommand under the /ai command using the dispatcher system.
+ * Also sets up database access and configuration for reports.
  */
 public class Report implements IMCEngineArtificialIntelligenceAddOn {
 
+    /**
+     * Called when the Report AddOn is loaded.
+     *
+     * @param plugin The Bukkit plugin instance.
+     */
     @Override
     public void onLoad(Plugin plugin) {
         MCEngineExtensionLogger logger = new MCEngineExtensionLogger(plugin, "AddOn", "MCEngineReport");
 
         String folderPath = "extensions/addons/configs/MCEngineReport";
-
-        // Create default config if missing
         ReportUtil.createConfig(plugin, folderPath);
 
         try {
+            // Set up DB and utility classes
             Connection conn = MCEngineArtificialIntelligenceCommon.getApi().getDBConnection();
             ReportDB dbApi = new ReportDB(conn, logger);
-
-            // Load utility class once and share instance
             ReportCommandUtil util = new ReportCommandUtil(plugin, folderPath);
 
-            // Register /report command dynamically
-            PluginManager pluginManager = Bukkit.getPluginManager();
-            Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-            commandMapField.setAccessible(true);
-            CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
+            // Register dispatcher subcommand
+            String namespace = "ai";
+            String subcommand = "report";
 
-            Command reportCommand = new Command("report") {
-                private final ReportCommand handler = new ReportCommand(logger, folderPath, dbApi, plugin, util);
-                private final ReportTabCompleter completer = new ReportTabCompleter();
+            MCEngineArtificialIntelligenceCommon api = MCEngineArtificialIntelligenceCommon.getApi();
+            api.registerSubCommand(namespace, subcommand, new ReportCommand(logger, folderPath, dbApi, plugin, util));
+            api.registerSubTabCompleter(namespace, subcommand, new ReportTabCompleter());
 
-                @Override
-                public boolean execute(CommandSender sender, String label, String[] args) {
-                    return handler.onCommand(sender, this, label, args);
-                }
-
-                @Override
-                public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
-                    return completer.onTabComplete(sender, this, alias, args);
-                }
-            };
-
-            reportCommand.setDescription("Report a player for misconduct.");
-            reportCommand.setUsage("/report <player> <message>");
-
-            commandMap.register(plugin.getName().toLowerCase(), reportCommand);
-
-            logger.info("Enabled successfully.");
+            // Log success
+            logger.info("Report dispatcher subcommand registered successfully.");
 
         } catch (Exception e) {
             logger.warning("Failed to initialize Report AddOn: " + e.getMessage());
             e.printStackTrace();
         }
-
-        MCEngineCoreApi.checkUpdate(plugin, logger.getLogger(),
-            "github", "MCEngine-Extension", "artificialintelligence-addon-report",
-            plugin.getConfig().getString("github.token", "null"));
     }
 
+    /**
+     * Sets the internal ID of the Report AddOn.
+     *
+     * @param id The unique ID string.
+     */
     @Override
     public void setId(String id) {
         MCEngineCoreApi.setId("mcengine-report");
     }
 
+    /**
+     * Called when the Report AddOn is unloaded.
+     *
+     * @param plugin The Bukkit plugin instance.
+     */
     @Override
-    public void onDisload(Plugin plugin) {}
+    public void onDisload(Plugin plugin) {
+        // Optional: cleanup logic here
+    }
 }
