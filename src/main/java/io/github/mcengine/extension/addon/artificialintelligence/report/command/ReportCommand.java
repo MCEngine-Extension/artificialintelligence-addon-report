@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Subcommand handler for /ai report.
+ * <p>
  * Supports both manual and AI-generated report submissions.
  */
 public class ReportCommand implements CommandExecutor {
@@ -88,8 +89,9 @@ public class ReportCommand implements CommandExecutor {
         }
 
         if (args.length < 2) {
-            player.sendMessage(ChatColor.YELLOW + "Usage: /ai report <player> <message>");
-            player.sendMessage(ChatColor.YELLOW + "Usage: /ai report <player> <platform> <model>");
+            player.sendMessage(ChatColor.RED + "Usage:");
+            player.sendMessage(ChatColor.GRAY + "/ai report <player> <message>");
+            player.sendMessage(ChatColor.GRAY + "/ai report <player> <platform> <model>");
             return true;
         }
 
