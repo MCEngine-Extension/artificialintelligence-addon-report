@@ -6,11 +6,12 @@ import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
 import io.github.mcengine.common.artificialintelligence.MCEngineArtificialIntelligenceCommon;
 import io.github.mcengine.extension.addon.artificialintelligence.report.command.ReportCommand;
 import io.github.mcengine.extension.addon.artificialintelligence.report.database.ReportDB;
+import io.github.mcengine.extension.addon.artificialintelligence.report.database.mysql.ReportDBMySQL;
+import io.github.mcengine.extension.addon.artificialintelligence.report.database.postgresql.ReportDBPostgreSQL;
+import io.github.mcengine.extension.addon.artificialintelligence.report.database.sqlite.ReportDBSQLite;
 import io.github.mcengine.extension.addon.artificialintelligence.report.tabcompleter.ReportTabCompleter;
 import io.github.mcengine.extension.addon.artificialintelligence.report.util.ReportCommandUtil;
 import io.github.mcengine.extension.addon.artificialintelligence.report.util.ReportUtil;
-
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -20,7 +21,7 @@ import java.sql.Connection;
 /**
  * Main class for the MCEngineReport AddOn.
  *
- * <p>Registers the 'report' subcommand under the /ai command using the dispatcher system.
+ * <p>Registers the {@code report} subcommand under the /ai command using the dispatcher system.
  * Also sets up database access and configuration for reports.</p>
  */
 public class Report implements IMCEngineArtificialIntelligenceAddOn {
@@ -47,9 +48,28 @@ public class Report implements IMCEngineArtificialIntelligenceAddOn {
         }
 
         try {
-            // Set up DB and utility classes
+            // Set up DB (dialect-specific) and utility classes
             Connection conn = MCEngineArtificialIntelligenceCommon.getApi().getDBConnection();
-            ReportDB dbApi = new ReportDB(conn, logger);
+
+            String dbType;
+            try {
+                dbType = plugin.getConfig().getString("database.type", "sqlite");
+            } catch (Throwable t) {
+                dbType = "sqlite";
+            }
+
+            ReportDB dbApi;
+            switch (dbType == null ? "sqlite" : dbType.toLowerCase()) {
+                case "mysql" -> dbApi = new ReportDBMySQL(conn, logger);
+                case "postgresql", "postgres" -> dbApi = new ReportDBPostgreSQL(conn, logger);
+                case "sqlite" -> dbApi = new ReportDBSQLite(conn, logger);
+                default -> {
+                    logger.warning("Unknown database.type='" + dbType + "', defaulting to SQLite for Report.");
+                    dbApi = new ReportDBSQLite(conn, logger);
+                }
+            }
+            dbApi.ensureSchema();
+
             ReportCommandUtil util = new ReportCommandUtil(plugin, folderPath);
 
             // Register dispatcher subcommand
