@@ -16,7 +16,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
-import java.sql.Connection;
 
 /**
  * Main class for the MCEngineReport AddOn.
@@ -48,9 +47,7 @@ public class Report implements IMCEngineArtificialIntelligenceAddOn {
         }
 
         try {
-            // Set up DB (dialect-specific) and utility classes
-            Connection conn = MCEngineArtificialIntelligenceCommon.getApi().getDBConnection();
-
+            // Determine DB type and build the dialect-specific ReportDB implementation
             String dbType;
             try {
                 dbType = plugin.getConfig().getString("database.type", "sqlite");
@@ -60,12 +57,12 @@ public class Report implements IMCEngineArtificialIntelligenceAddOn {
 
             ReportDB dbApi;
             switch (dbType == null ? "sqlite" : dbType.toLowerCase()) {
-                case "mysql" -> dbApi = new ReportDBMySQL(conn, logger);
-                case "postgresql", "postgres" -> dbApi = new ReportDBPostgreSQL(conn, logger);
-                case "sqlite" -> dbApi = new ReportDBSQLite(conn, logger);
+                case "mysql" -> dbApi = new ReportDBMySQL(logger);
+                case "postgresql", "postgres" -> dbApi = new ReportDBPostgreSQL(logger);
+                case "sqlite" -> dbApi = new ReportDBSQLite(logger);
                 default -> {
                     logger.warning("Unknown database.type='" + dbType + "', defaulting to SQLite for Report.");
-                    dbApi = new ReportDBSQLite(conn, logger);
+                    dbApi = new ReportDBSQLite(logger);
                 }
             }
             dbApi.ensureSchema();
